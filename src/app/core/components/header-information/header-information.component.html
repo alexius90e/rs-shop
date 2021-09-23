@@ -1,0 +1,46 @@
+<div class="header-information">
+  <div class="container-xxl">
+    <div class="row align-items-center">
+      <div class="header-information__location col-md-2 col-3">
+        <div class="header-information__location-icon"></div>
+        {{ location }}
+      </div>
+
+      <ul class="header-information__contacts col-md-7 col-9">
+        <li *ngFor="let contact of contacts.slice(0, 2)">
+          <a
+            class="link-secondary"
+            [href]="contact.href"
+            [ngClass]="contact.type"
+            >{{ contact.value }}</a
+          >
+        </li>
+        <li>
+          <button
+            class="btn btn-light dropdown-toggle"
+            (click)="showHiddenContacts()"
+          ></button>
+        </li>
+        <ul
+          *ngIf="isContactsVisible"
+          class="header-information__contacts-hidden"
+        >
+          <li *ngFor="let contact of contacts.slice(2)">
+            <a
+              class="link-secondary"
+              [href]="contact.href"
+              [ngClass]="contact.type"
+              >{{ contact.value }}</a
+            >
+          </li>
+        </ul>
+      </ul>
+
+      <div class="header-information__time col-3 d-md-flex d-none">
+        <div class="header-information__time-icon"></div>
+        контакт-центр <br />
+        {{ workingHours }}
+      </div>
+    </div>
+  </div>
+</div>

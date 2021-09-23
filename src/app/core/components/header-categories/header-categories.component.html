@@ -1,0 +1,14 @@
+<div class="header-categories">
+  <div class="container-xxl">
+    <div class="row">
+      <ul class="col-12 header-categories__list">
+        <li
+          *ngFor="let category of categories"
+          (click)="goCategoryPage(category.id)"
+        >
+          {{ category.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

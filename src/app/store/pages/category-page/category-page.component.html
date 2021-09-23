@@ -1,0 +1,86 @@
+<div class="container-xxl">
+  <div class="row">
+    <nav class="col-6" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item btn btn-link" (click)="goMainPage()">
+          Home
+        </li>
+        <li
+          class="breadcrumb-item btn btn-link"
+          *ngIf="routeParams.catId"
+          (click)="goCategoryPage()"
+        >
+          {{ routeParams.catId.split("-").join(" ") | titlecase }}
+        </li>
+        <li
+          class="breadcrumb-item btn btn-link"
+          *ngIf="routeParams.subCatId"
+          (click)="goSubCategoryPage()"
+        >
+          {{ routeParams.subCatId.split("-").join(" ") | titlecase }}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="sort col-6">
+      <button class="btn btn-link" (click)="sortByRating()">
+        по популярности
+      </button>
+      <button class="btn btn-link" (click)="sortByPrice()">по цене</button>
+    </div>
+
+    <div
+      *ngFor="let shopItem of shopItems"
+      class="good col-lg-3 col-md-4 col-sm-6 my-3"
+    >
+      <div class="card border-light shadow p-3">
+        <img
+          class="card-img-top img-fluid mb-3"
+          *ngIf="shopItem.imageUrls.length === 0"
+          (click)="goGoodsPage(shopItem.id)"
+          src="../../../../assets/img-not-found.png"
+          [alt]="shopItem.name"
+        />
+
+        <img
+          class="card-img-top img-fluid mb-3"
+          *ngIf="shopItem.imageUrls[0]"
+          (click)="goGoodsPage(shopItem.id)"
+          [src]="shopItem.imageUrls[0]"
+          [alt]="shopItem.name"
+        />
+
+        <div class="d-flex justify-content-between">
+          <app-good-rating [rating]="shopItem.rating"></app-good-rating>
+          <p
+            class="fw-bold"
+            [style.color]="
+              shopItem.availableAmount > 16
+                ? '#08a75d'
+                : shopItem.availableAmount > 8
+                ? '#ffc107'
+                : '#ff4c3b'
+            "
+          >
+            in stock
+          </p>
+        </div>
+
+        <h5 class="good__price h5 fw-bold">
+          {{ shopItem.price | currency: "BYN " }}
+        </h5>
+        <h6 class="good__heading h6" (click)="goGoodsPage(shopItem.id)">
+          {{ cropHeading(shopItem.name) }}
+        </h6>
+
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-primary">Купить</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button class="btn btn-danger" (click)="increaseCounter()">Загрузить еще</button>
+    </div>
+  </div>
+</div>

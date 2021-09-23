@@ -1,0 +1,50 @@
+<div class="header-nav">
+  <div class="container-xxl">
+    <div class="row">
+      <div class="col-md-3 col-5 order-0 d-flex align-items-center">
+        <button (click)="goCatalog()" class="header-nav__categories"></button>
+        <div (click)="goHome()" class="header-nav__logo">
+          <span>Multi</span>Cart
+        </div>
+      </div>
+
+      <form class="header-nav__search col-md-6 col-12 order-md-1 order-2">
+        <input type="text" placeholder="Search" />
+      </form>
+
+      <div class="header-nav__btns col-md-3 col-7 order-md-2 order-1">
+        <button class="header-nav__btns_account" (click)="toggleUserInfo()">
+          Аккаунт
+        </button>
+        <button class="header-nav__btns_basket" (click)="goUserPage('order')">
+          Корзина
+        </button>
+
+        <div
+          class="header-nav__user col-12 col-md-3"
+          *ngIf="headerState.userInfo"
+        >
+          <div class="header-nav__user_avatar"></div>
+          <h3 class="h3 mt-2 mb-4 text-center">User Name</h3>
+          <div class="d-grid gap-2 col-11 mx-auto">
+            <button class="btn btn-danger mb-4" (click)="goUserPage('auth')">
+              Войти
+            </button>
+            <button class="btn btn-light btn-sm" (click)="goUserPage('order')">
+              Корзина
+            </button>
+            <button class="btn btn-light btn-sm" (click)="goUserPage('aside')">
+              Избранное
+            </button>
+            <button
+              class="btn btn-link btn-sm"
+              (click)="goUserPage('register')"
+            >
+              Регистрация
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
