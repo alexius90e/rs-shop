@@ -56,10 +56,10 @@ export class GoodPageComponent implements OnInit {
   }
 
   goCategoryPage() {
-    this.router.navigate([`/goods/${this.routeParams.catId}`]);
+    this.router.navigate([`store/goods/${this.routeParams.catId}`]);
   }
 
   goSubCategoryPage() {
-    this.router.navigate([`/goods/${this.routeParams.catId}/${this.routeParams.subCatId}`]);
+    this.router.navigate([`store/goods/${this.routeParams.catId}/${this.routeParams.subCatId}`]);
   }
 }

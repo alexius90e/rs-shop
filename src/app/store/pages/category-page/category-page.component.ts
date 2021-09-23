@@ -98,7 +98,7 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
 
   goGoodsPage(id: string) {
     this.router.navigate([
-      `/item/${id}`,
+      `store/item/${id}`,
     ]);
   }
 
@@ -107,12 +107,12 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
   }
 
   goCategoryPage() {
-    this.router.navigate([`/goods/${this.routeParams.catId}`]);
+    this.router.navigate([`store/goods/${this.routeParams.catId}`]);
   }
 
   goSubCategoryPage() {
     this.router.navigate([
-      `/goods/${this.routeParams.catId}/${this.routeParams.subCatId}`,
+      `store/goods/${this.routeParams.catId}/${this.routeParams.subCatId}`,
     ]);
   }
 }

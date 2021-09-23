@@ -3,13 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
 import { CategoryPageComponent } from './pages/category-page/category-page.component';
 import { GoodPageComponent } from './pages/good-page/good-page.component';
-import { MainPageComponent } from './pages/main-page/main-page.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: MainPageComponent,
-  },
   {
     path: 'categories',
     component: CategoriesPageComponent,

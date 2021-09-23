@@ -5,6 +5,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderCategoriesComponent } from './components/header-categories/header-categories.component';
 import { HeaderInformationComponent } from './components/header-information/header-information.component';
 import { HeaderNavigationComponent } from './components/header-navigation/header-navigation.component';
+import { MainPageComponent } from './pages/main-page/main-page.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { HeaderNavigationComponent } from './components/header-navigation/header
     HeaderInformationComponent,
     HeaderNavigationComponent,
     HeaderCategoriesComponent,
+    MainPageComponent,
   ],
   imports: [CommonModule],
   exports: [HeaderComponent, FooterComponent],

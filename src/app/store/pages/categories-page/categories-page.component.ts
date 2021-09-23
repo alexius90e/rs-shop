@@ -26,7 +26,7 @@ export class CategoriesPageComponent implements OnInit {
   }
 
   goCategoryPage(catId: string, subCatId?: string) {
-    if (subCatId) this.router.navigate([`/goods/${catId}/${subCatId}`]);
-    if (!subCatId) this.router.navigate([`/goods/${catId}`]);
+    if (subCatId) this.router.navigate([`store/goods/${catId}/${subCatId}`]);
+    if (!subCatId) this.router.navigate([`store/goods/${catId}`]);
   }
 }

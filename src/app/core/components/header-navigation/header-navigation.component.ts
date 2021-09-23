@@ -19,12 +19,12 @@ export class HeaderNavigationComponent implements OnInit {
   ngOnInit(): void {}
 
   goCatalog() {
-    this.router.navigate(['/categories']);
+    this.router.navigate(['store/categories']);
     this.hideDropdowns();
   }
 
   goHome() {
-    this.router.navigate(['/']);
+    this.router.navigate(['']);
     this.hideDropdowns();
   }
 

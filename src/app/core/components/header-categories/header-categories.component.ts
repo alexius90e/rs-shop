@@ -20,6 +20,6 @@ export class HeaderCategoriesComponent implements OnInit {
   }
 
   goCategoryPage(id: string) {
-    this.router.navigate([`/goods/${id}`]);
+    this.router.navigate([`store/goods/${id}`]);
   }
 }

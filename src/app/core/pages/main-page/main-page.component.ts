@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ShopItem } from 'src/app/shared/models/shop-item';
-import { AppDataService } from '../../../core/services/app-data.service';
+import { AppDataService } from '../../services/app-data.service';
 
 @Component({
   selector: 'app-main-page',
@@ -83,6 +83,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   public goItemPage(id: string) {
-    this.router.navigate([`/item/${id}`]);
+    this.router.navigate([`store/item/${id}`]);
   }
 }

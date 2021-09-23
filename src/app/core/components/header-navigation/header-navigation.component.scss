@@ -66,11 +66,11 @@
 
     &_account {
       color: #ff4c3b;
-      background: url(/assets/profile.svg) no-repeat left center;
+      background: url(../../../../assets/profile.svg) no-repeat left center;
     }
     &_basket {
       color: #939393;
-      background: url(/assets/basket.svg) no-repeat left center;
+      background: url(../../../../assets/basket.svg) no-repeat left center;
     }
 
     & .btn-danger {
@@ -103,7 +103,7 @@
       border: 0.25rem solid #d8d7d7;
       border-radius: 99px;
       background-color: #e5e5e5;
-      background-image: url(/assets/img-not-found.png);
+      background-image: url(../../../../assets/img-not-found.png);
       background-position: center;
       background-repeat: no-repeat;
       background-size: 4rem;
