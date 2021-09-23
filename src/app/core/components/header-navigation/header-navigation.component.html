@@ -8,8 +8,37 @@
         </div>
       </div>
 
-      <form class="header-nav__search col-md-6 col-12 order-md-1 order-2">
-        <input type="text" placeholder="Search" />
+      <form
+        [formGroup]="searchForm"
+        class="header-nav__search col-md-6 col-12 order-md-1 order-2"
+        autocomplete="off"
+      >
+        <input
+          [(ngModel)]="searchQuery"
+          formControlName="searchQuery"
+          placeholder="Search"
+          name="search"
+        />
+
+        <table
+          class="table table-hover header-nav__search_dropdown col"
+          *ngIf="headerState.searchBar"
+        >
+          <tbody>
+            <tr *ngFor="let searchItem of searchItems" (click)="goItemPage(searchItem.id)">
+              <td>
+                <img
+                  class="header-nav__search_dropdown-img"
+                  [src]="searchItem.imageUrls[0]"
+                />
+              </td>
+              <td class="header-nav__search_dropdown-link">
+                {{ searchItem.name }}
+              </td>
+              <td class="fw-bold">{{ searchItem.price | currency: 'BYN ' }}</td>
+            </tr>
+          </tbody>
+        </table>
       </form>
 
       <div class="header-nav__btns col-md-3 col-7 order-md-2 order-1">
