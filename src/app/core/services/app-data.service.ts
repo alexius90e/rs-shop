@@ -16,12 +16,8 @@ export class AppDataService {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
   }
 
-  getGoodsByCategory(
-    id: string,
-    count = 12,
-    start = 0
-  ): Observable<ShopItem[]> {
-    const requestUrl = `/goods/category/${id}?start=${start}&count=${count}`;
+  getGoodsByCategory(id: string, count = 12): Observable<ShopItem[]> {
+    const requestUrl = `/goods/category/${id}?start=${0}&count=${count}`;
     return this.http.get<ShopItem[]>(`${this.baseUrl}${requestUrl}`);
   }
 
@@ -38,5 +34,10 @@ export class AppDataService {
   getShopItemById(id: string): Observable<ShopItem> {
     const requestUrl = `/goods/item/${id}`;
     return this.http.get<ShopItem>(`${this.baseUrl}${requestUrl}`);
+  }
+
+  getShopItemBySearchQuery(searchQuery: string): Observable<ShopItem[]> {
+    const requestUrl = `/goods/search?text=${searchQuery}`;
+    return this.http.get<ShopItem[]>(`${this.baseUrl}${requestUrl}`);
   }
 }

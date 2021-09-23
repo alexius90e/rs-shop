@@ -23,7 +23,7 @@ const routes: Routes = [
     component: CategoryPageComponent,
   },
   {
-    path: 'goods/:catId/:subCatId/:itemId',
+    path: 'item/:itemId',
     component: GoodPageComponent,
   },
 ];

@@ -13,17 +13,6 @@ $thubnail-size: 6rem;
   }
 }
 
-.breadcrumb {
-  & .btn-link {
-    padding: 0;
-    color: #ff4c3b;
-
-    &:focus {
-      box-shadow: 0 0 0 0.25rem rgb(255 77 86 / 25%);
-    }
-  }
-}
-
 .good {
   &__gallery {
     display: flex;

@@ -1,1 +1,76 @@
-<p>main-page works!</p>
+<div class="carousel carousel__main slide mb-4">
+  <div class="carousel-inner">
+    <div
+      class="carousel-item"
+      *ngFor="let slide of slides; index as i"
+      [ngClass]="{ active: i === mainCounter }"
+      (click)="goItemPage(slide.id)"
+    >
+      <div class="container-xxl">
+        <div class="row">
+          <div class="carousel-item__text col-12 col-md-6 order-md-0 order-1">
+            <h3 class="carousel-item__text_price">
+              {{ slide.price | number: '1.0-0' }}<span> BYN</span>
+            </h3>
+            <h2 class="carousel-item__text_name">
+              {{ slide.name.split(' ').slice(0, 4).join(' ') | uppercase }}
+            </h2>
+          </div>
+          <div
+            class="carousel-item__picture col-12 col-md-6 order-md-1 order-0"
+          >
+            <img [src]="slide.imageUrls[0]" alt="slide.name" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="carousel carousel-dark carousel__popular slide col-12">
+  <div class="carousel-inner">
+    <div
+      class="carousel-item"
+      *ngFor="let popularBlock of popular; index as i"
+      [ngClass]="{ active: i === popularCounter }"
+    >
+      <div class="container">
+        <div class="row">
+          <div
+            class="col-12 col-md-6 col-lg-4 mb-3"
+            *ngFor="let popularItem of popularBlock; index as i"
+            (click)="goItemPage(popularItem.id)"
+          >
+            <div class="carousel__popular_item shadow rounded p-3">
+              <div class="carousel__popular_item-thumbnail">
+                <img
+                  [src]="popularItem.imageUrls[0]"
+                  [alt]="popularItem.name"
+                />
+              </div>
+              <div class="carousel__popular_item-description">
+                <h4 class="h6 carousel__popular_item-description-name">
+                  {{ popularItem.name }}
+                </h4>
+                <app-good-rating
+                  [rating]="popularItem.rating"
+                ></app-good-rating>
+                <h4 class="h5 carousel__popular_item-description-price">
+                  {{ popularItem.price | currency: 'BYN ':'symbol' }}
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" (click)="showNextPopularSlide()">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" (click)="showPrevPopularSlide()">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>

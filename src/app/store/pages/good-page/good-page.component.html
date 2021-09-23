@@ -1,26 +1,5 @@
 <div class="container-xxl">
   <div class="row">
-    <nav class="col-12" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item btn btn-link" (click)="goMainPage()">
-          Home
-        </li>
-        <li
-          class="breadcrumb-item btn btn-link"
-          *ngIf="routeParams.catId"
-          (click)="goCategoryPage()"
-        >
-          {{ routeParams.catId.split("-").join(" ") | titlecase }}
-        </li>
-        <li
-          class="breadcrumb-item btn btn-link"
-          *ngIf="routeParams.subCatId"
-          (click)="goSubCategoryPage()"
-        >
-          {{ routeParams.subCatId.split("-").join(" ") | titlecase }}
-        </li>
-      </ol>
-    </nav>
 
     <div class="col-md-6 good__gallery">
       <figure class="good__gallery_wrap figure" (click)="showNextImage()">

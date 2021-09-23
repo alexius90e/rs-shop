@@ -98,7 +98,7 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
 
   goGoodsPage(id: string) {
     this.router.navigate([
-      `/goods/${this.routeParams.catId}/${this.routeParams.subCatId}/${id}`,
+      `/item/${id}`,
     ]);
   }
 
