@@ -4,32 +4,90 @@ import { Observable } from 'rxjs';
 import { UserInfo } from 'src/app/shared/models/user-info';
 import { UserRegister } from 'src/app/shared/models/user-register';
 import { UserLogin } from 'src/app/shared/models/user-login';
+import { catchError, retry } from 'rxjs/operators';
+import { OrderItem } from 'src/app/shared/models/order-item';
+import { UserOrder } from 'src/app/shared/models/user-order';
+import { UserOrderModify } from 'src/app/shared/models/user-order-modify';
+import { TokenResponse } from 'src/app/shared/models/token-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  baseUrl: string = 'http://localhost:3004';
+  private readonly baseUrl: string = 'http://localhost:3004';
 
-  user: UserRegister = {
-    firstName: 'Alex',
-    lastName: 'Karzhov',
-    login: 'alexius90e',
-    password: '123456789',
-  };
+  public isAuthorized = false;
 
-  constructor(private http: HttpClient) {
+  private token: string = '';
+
+  constructor(private http: HttpClient) {}
+
+  public getAuthorizationToken() {
+    return this.token;
   }
 
-  getCurrentUser(): Observable<UserInfo> {
-    return this.http.get<UserInfo>(`${this.baseUrl}/users/userInfo`);
+  public setAuthorizationToken(token: string) {
+    this.token = token;
   }
 
-  registerNewUser(user: UserRegister) {
-    return this.http.post(`${this.baseUrl}/users/register`, JSON.stringify(user));
+  public getUserInfo(): Observable<void | UserInfo> {
+    return this.http.get<UserInfo>(`${this.baseUrl}/users/userInfo`).pipe(
+      retry(2),
+      catchError(async (error) => console.log(error))
+    );
   }
 
-  loginUser(user: UserLogin) {
-    return this.http.post(`${this.baseUrl}/users/login`, JSON.stringify(user));
+  public loginUser(user: UserLogin): Observable<TokenResponse> {
+    return this.http
+      .post<TokenResponse>(`${this.baseUrl}/users/login`, user)
+  }
+
+  public registerUser(user: UserRegister): Observable<TokenResponse> {
+    return this.http
+      .post<TokenResponse>(`${this.baseUrl}/users/register`, user)
+  }
+
+  public addFavoritesItem(item: OrderItem): Observable<void | OrderItem> {
+    return this.http
+      .post<OrderItem>(`${this.baseUrl}/users/favorites`, item)
+      .pipe(catchError(async (error) => console.log(error)));
+  }
+
+  public deleteFavoritesItem(id: string): Observable<unknown> {
+    return this.http
+      .delete(`${this.baseUrl}/users/favorites?id=${id}`)
+      .pipe(catchError(async (error) => console.log(error)));
+  }
+
+  public addCartItem(item: OrderItem): Observable<void | OrderItem> {
+    return this.http
+      .post<OrderItem>(`${this.baseUrl}/users/cart`, item)
+      .pipe(catchError(async (error) => console.log(error)));
+  }
+
+  public deleteCartItem(id: string): Observable<unknown> {
+    return this.http
+      .delete(`${this.baseUrl}/users/cart?id=${id}`)
+      .pipe(catchError(async (error) => console.log(error)));
+  }
+
+  public addOrder(order: UserOrder): Observable<void | UserOrder> {
+    return this.http
+      .post<UserOrder>(`${this.baseUrl}/users/order`, order)
+      .pipe(catchError(async (error) => console.log(error)));
+  }
+
+  public updateOrder(
+    order: UserOrderModify
+  ): Observable<void | UserOrderModify> {
+    return this.http
+      .put<UserOrderModify>(`${this.baseUrl}/users/order`, order)
+      .pipe(catchError(async (error) => console.log(error)));
+  }
+
+  public deleteOrder(id: string): Observable<unknown> {
+    return this.http
+      .delete(`${this.baseUrl}/users/cart?id=${id}`)
+      .pipe(catchError(async (error) => console.log(error)));
   }
 }

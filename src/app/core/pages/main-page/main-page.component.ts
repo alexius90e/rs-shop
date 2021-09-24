@@ -56,8 +56,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
     for (let i = 0; i < countOfSlices; i++) {
       slicedArray.push(array.slice(i * itemSize, (i + 1) * itemSize));
     }
-
-    console.log(countOfSlices);
     return slicedArray;
   }
 

@@ -34,6 +34,7 @@ export class HeaderNavigationComponent implements OnInit {
     this.searchSubscription = this.searchForm.valueChanges
       .pipe(debounceTime(300))
       .subscribe((res: { searchQuery: string }) => {
+        this.searchQuery = res.searchQuery
         if (res.searchQuery && res.searchQuery.length > 1) {
           this.getSearchItems();
         } else {

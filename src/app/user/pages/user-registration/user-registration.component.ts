@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { UserLogin } from 'src/app/shared/models/user-login';
+import { TokenResponse } from 'src/app/shared/models/token-response';
 import { UserRegister } from 'src/app/shared/models/user-register';
 
 @Component({
@@ -35,20 +36,11 @@ export class UserRegistrationComponent {
   constructor(private router: Router, private userService: UserService) {}
 
   submit() {
-    const newUser: UserRegister = this.registForm.value;
-    console.log(this.registForm.value);
-    this.userService.registerNewUser(newUser).subscribe((token) => {
-      console.log(token);
-      const login: UserLogin = {
-        login: newUser.login,
-        password: newUser.password,
-      };
-      this.userService.loginUser(login).subscribe((token) => {
-        console.log(token);
-        this.userService
-          .getCurrentUser()
-          .subscribe((user) => console.log(user));
-      });
+    const user: UserRegister = this.registForm.value;
+    this.userService.registerUser(user).subscribe((token: TokenResponse) => {
+      this.userService.setAuthorizationToken(token.token);
+      this.userService.isAuthorized = true;
+      this.router.navigate(['']);
     });
   }
 }

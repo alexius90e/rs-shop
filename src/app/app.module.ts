@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
+import { TokenInterceptor } from './shared/http-inteceptors/token.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,9 +16,15 @@ import { CoreModule } from './core/core.module';
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
-    CoreModule
+    CoreModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      multi: true,
+      useClass: TokenInterceptor,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

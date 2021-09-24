@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/core/services/user.service';
+import { TokenResponse } from 'src/app/shared/models/token-response';
+import { UserLogin } from 'src/app/shared/models/user-login';
 
 @Component({
   selector: 'app-user-auth',
@@ -21,10 +24,15 @@ export class UserAuthComponent {
     ]),
   });
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
   submit() {
-    console.log(this.authForm.value);
+    const user: UserLogin = this.authForm.value;
+    this.userService.loginUser(user).subscribe((token: TokenResponse) => {
+      this.userService.setAuthorizationToken(token.token);
+      this.userService.isAuthorized = true;
+      this.router.navigate(['']);
+    });
   }
 
   goUserPage(pageName: string): void {
