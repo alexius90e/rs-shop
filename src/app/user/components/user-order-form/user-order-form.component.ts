@@ -51,6 +51,6 @@ export class UserOrderFormComponent {
     const orderRequest: UserOrderRequest = { items, details };
     this.userService.addOrder(orderRequest).subscribe();
     this.orderIsComplete = true;
-    setInterval(() => this.appRouting.navigateToMainPage(), 2000);
+    setTimeout(() => this.appRouting.navigateToMainPage(), 2000);
   }
 }
