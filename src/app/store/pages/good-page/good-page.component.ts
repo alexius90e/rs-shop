@@ -31,9 +31,9 @@ export class GoodPageComponent implements OnInit {
       this.shopItemSubscription = this.appData
         .getShopItemById(params.itemId)
         .subscribe((shopItem: ShopItem): void => {
+          this.shopItem = shopItem;
           if (shopItem.imageUrls[0])
             this.activeImageUrl = shopItem.imageUrls[0];
-          this.shopItem = shopItem;
         });
     });
   }

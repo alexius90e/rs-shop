@@ -1,6 +1,6 @@
-<div class="container-xxl">
+<div class="container-xxl" *ngIf="shopItem">
   <div class="row">
-    <div class="col-md-6 good__gallery">
+    <div class="col-md-6 good__gallery" >
       <figure class="good__gallery_wrap figure" (click)="showNextImage()">
         <img
           class="figure-img img-fluid rounded"
@@ -16,7 +16,7 @@
           [alt]="shopItem.name"
         />
       </figure>
-      <div class="good__gallery_thumbnails" *ngIf="shopItem.imageUrls">
+      <div class="good__gallery_thumbnails">
         <img
           class="rounded img-thumbnail good__gallery_thumbnail"
           *ngFor="let url of shopItem.imageUrls"

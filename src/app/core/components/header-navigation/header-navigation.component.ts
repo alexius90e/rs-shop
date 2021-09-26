@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { ShopItem } from 'src/app/shared/models/shop-item';
+import { TokenResponse } from 'src/app/shared/models/token-response';
 import { AppDataService } from '../../services/app-data.service';
 import { UserService } from '../../services/user.service';
 
@@ -45,9 +46,19 @@ export class HeaderNavigationComponent implements OnInit {
         }
       });
 
-    this.userSubscription = this.userService.getUserInfo().subscribe((user) => {
-      if (user) this.userName = `${user.firstName} ${user.lastName}`;
-    });
+    const user = localStorage.getItem('currentUser');
+    if (user)
+      this.userService
+        .loginUser(JSON.parse(user))
+        .subscribe((token: TokenResponse) => {
+          this.userService.setAuthorizationToken(token.token);
+          this.userService.isAuthorized = true;
+          this.userSubscription = this.userService
+            .getUserInfo()
+            .subscribe((user) => {
+              this.userName = `${user.firstName} ${user.lastName}`;
+            });
+        });
   }
 
   ngOnDestroy() {
@@ -73,7 +84,6 @@ export class HeaderNavigationComponent implements OnInit {
     this.router.navigate(['']);
     this.hideDropdowns();
     localStorage.removeItem('currentUser');
-    // this.userName = 'User Name';
   }
 
   goCatalog() {

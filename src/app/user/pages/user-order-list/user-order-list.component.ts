@@ -31,7 +31,6 @@ export class UserOrderListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getOrders();
-    this.getItems(this.orders[this.currentOrder].items);
   }
 
   ngOnDestroy() {
