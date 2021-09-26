@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { UserInfo } from 'src/app/shared/models/user-info';
 import { UserRegister } from 'src/app/shared/models/user-register';
 import { UserLogin } from 'src/app/shared/models/user-login';
@@ -22,6 +22,17 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      console.error('An error occurred:', error.error);
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, body was: `, error.error);
+    }
+    return throwError(
+      'Something bad happened; please try again later.');
+  }
+
   public getAuthorizationToken() {
     return this.token;
   }
@@ -30,21 +41,27 @@ export class UserService {
     this.token = token;
   }
 
-  public getUserInfo(): Observable<void | UserInfo> {
+  public getUserInfo(): Observable<UserInfo> {
     return this.http.get<UserInfo>(`${this.baseUrl}/users/userInfo`).pipe(
       retry(2),
-      catchError(async (error) => console.log(error))
+      catchError((error) => this.handleError(error))
     );
   }
 
   public loginUser(user: UserLogin): Observable<TokenResponse> {
-    return this.http
-      .post<TokenResponse>(`${this.baseUrl}/users/login`, user)
+    return this.http.post<TokenResponse>(`${this.baseUrl}/users/login`, user);
+  }
+
+  public logoutUser(): void {
+    this.token = '';
+    this.isAuthorized = false;
   }
 
   public registerUser(user: UserRegister): Observable<TokenResponse> {
-    return this.http
-      .post<TokenResponse>(`${this.baseUrl}/users/register`, user)
+    return this.http.post<TokenResponse>(
+      `${this.baseUrl}/users/register`,
+      user
+    );
   }
 
   public addFavoritesItem(item: OrderItem): Observable<void | OrderItem> {
@@ -59,16 +76,16 @@ export class UserService {
       .pipe(catchError(async (error) => console.log(error)));
   }
 
-  public addCartItem(item: OrderItem): Observable<void | OrderItem> {
+  public addCartItem(item: OrderItem): Observable<OrderItem> {
     return this.http
       .post<OrderItem>(`${this.baseUrl}/users/cart`, item)
-      .pipe(catchError(async (error) => console.log(error)));
+      .pipe(catchError((error) => this.handleError(error)));
   }
 
   public deleteCartItem(id: string): Observable<unknown> {
     return this.http
       .delete(`${this.baseUrl}/users/cart?id=${id}`)
-      .pipe(catchError(async (error) => console.log(error)));
+      .pipe(catchError((error) => this.handleError(error)));
   }
 
   public addOrder(order: UserOrder): Observable<void | UserOrder> {

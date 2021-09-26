@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { TokenResponse } from 'src/app/shared/models/token-response';
 import { UserRegister } from 'src/app/shared/models/user-register';
@@ -37,6 +36,7 @@ export class UserRegistrationComponent {
 
   submit() {
     const user: UserRegister = this.registForm.value;
+    localStorage.setItem('currentUser', JSON.stringify({login: user.login, password: user.password}));
     this.userService.registerUser(user).subscribe((token: TokenResponse) => {
       this.userService.setAuthorizationToken(token.token);
       this.userService.isAuthorized = true;

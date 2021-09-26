@@ -24,7 +24,7 @@ export class UserGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (!this.userService.isAuthorized)
-      this.router.navigate(['user/auth']);
+      this.router.navigate(['user/register']);
     return this.userService.isAuthorized;
   }
 }

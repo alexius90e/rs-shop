@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
@@ -28,6 +28,7 @@ export class UserAuthComponent {
 
   submit() {
     const user: UserLogin = this.authForm.value;
+    localStorage.setItem('currentUser', JSON.stringify(user));
     this.userService.loginUser(user).subscribe((token: TokenResponse) => {
       this.userService.setAuthorizationToken(token.token);
       this.userService.isAuthorized = true;

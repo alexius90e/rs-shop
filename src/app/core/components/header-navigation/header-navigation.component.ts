@@ -14,8 +14,10 @@ import { UserService } from '../../services/user.service';
 })
 export class HeaderNavigationComponent implements OnInit {
   public searchQuery: string = '';
+  public userName: string = 'User Name';
   public searchItems: ShopItem[] = [];
-  public searchSubscription!: Subscription;
+  private searchSubscription: Subscription = Subscription.EMPTY;
+  private userSubscription: Subscription = Subscription.EMPTY;
   public searchForm: FormGroup = new FormGroup({
     searchQuery: new FormControl(),
   });
@@ -27,14 +29,14 @@ export class HeaderNavigationComponent implements OnInit {
   constructor(
     private router: Router,
     private appData: AppDataService,
-    private userService: UserService
+    public userService: UserService
   ) {}
 
   ngOnInit() {
     this.searchSubscription = this.searchForm.valueChanges
       .pipe(debounceTime(300))
       .subscribe((res: { searchQuery: string }) => {
-        this.searchQuery = res.searchQuery
+        this.searchQuery = res.searchQuery;
         if (res.searchQuery && res.searchQuery.length > 1) {
           this.getSearchItems();
         } else {
@@ -42,21 +44,36 @@ export class HeaderNavigationComponent implements OnInit {
           this.searchItems = [];
         }
       });
+
+    this.userSubscription = this.userService.getUserInfo().subscribe((user) => {
+      if (user) this.userName = `${user.firstName} ${user.lastName}`;
+    });
   }
 
   ngOnDestroy() {
     this.searchSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
   getSearchItems() {
-    this.appData.getShopItemBySearchQuery(this.searchQuery).subscribe((items: ShopItem[]) => {
-      this.searchItems = items.filter((item: ShopItem) => {
-        const string = item.name.toLocaleLowerCase();
-        const subString = this.searchQuery.toLocaleLowerCase();
-        return string.includes(subString);
+    this.appData
+      .getShopItemBySearchQuery(this.searchQuery)
+      .subscribe((items: ShopItem[]) => {
+        this.searchItems = items.filter((item: ShopItem) => {
+          const string = item.name.toLocaleLowerCase();
+          const subString = this.searchQuery.toLocaleLowerCase();
+          return string.includes(subString);
+        });
+        if (this.searchItems.length > 0) this.headerState.searchBar = true;
       });
-      if (this.searchItems.length > 0) this.headerState.searchBar = true;
-    });
+  }
+
+  logout() {
+    this.userService.logoutUser();
+    this.router.navigate(['']);
+    this.hideDropdowns();
+    localStorage.removeItem('currentUser');
+    // this.userName = 'User Name';
   }
 
   goCatalog() {

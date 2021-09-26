@@ -3,6 +3,9 @@ import { AppDataService } from '../../../core/services/app-data.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ShopItem } from 'src/app/shared/models/shop-item';
+import { AppRoutingService } from 'src/app/core/services/app-routing.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { OrderItem } from 'src/app/shared/models/order-item';
 
 @Component({
   selector: 'app-category-page',
@@ -21,6 +24,7 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private appData: AppDataService,
+    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -94,6 +98,16 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
         .getGoodsByCategory(this.routeParams.catId, this.itemsQty * this.counter)
         .subscribe((shopItems) => (this.shopItems = shopItems));
     }
+  }
+
+  addItemToCart(id: string): void {
+    const orderItem: OrderItem = {id, amount: 1}
+    this.userService.addCartItem(orderItem).subscribe();
+  }
+
+  addItemToFavorites(id: string): void {
+    const orderItem: OrderItem = {id, amount: 1}
+    this.userService.addFavoritesItem(orderItem).subscribe();
   }
 
   goGoodsPage(id: string) {

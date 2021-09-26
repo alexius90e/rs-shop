@@ -24,7 +24,10 @@
           *ngIf="headerState.searchBar"
         >
           <tbody>
-            <tr *ngFor="let searchItem of searchItems" (click)="goItemPage(searchItem.id)">
+            <tr
+              *ngFor="let searchItem of searchItems"
+              (click)="goItemPage(searchItem.id)"
+            >
               <td>
                 <img
                   class="header-nav__search_dropdown-img"
@@ -34,7 +37,7 @@
               <td class="header-nav__search_dropdown-link">
                 {{ searchItem.name }}
               </td>
-              <td class="fw-bold">{{ searchItem.price | currency: 'BYN ' }}</td>
+              <td class="fw-bold">{{ searchItem.price | currency: "BYN " }}</td>
             </tr>
           </tbody>
         </table>
@@ -53,10 +56,21 @@
           *ngIf="headerState.userInfo"
         >
           <div class="header-nav__user_avatar"></div>
-          <h3 class="h3 mt-2 mb-4 text-center">User Name</h3>
+          <h3 class="h3 mt-2 mb-4 text-center">{{userName}}</h3>
           <div class="d-grid gap-2 col-11 mx-auto">
-            <button class="btn btn-danger mb-4" (click)="goUserPage('auth')">
+            <button
+              class="btn btn-danger mb-4"
+              *ngIf="!userService.isAuthorized"
+              (click)="goUserPage('auth')"
+            >
               Войти
+            </button>
+            <button
+              class="btn btn-danger mb-4"
+              *ngIf="userService.isAuthorized"
+              (click)="logout()"
+            >
+              Выйти
             </button>
             <button class="btn btn-light btn-sm" (click)="goUserPage('order')">
               Корзина

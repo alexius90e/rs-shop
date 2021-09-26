@@ -11,10 +11,6 @@ export class AppRoutingService {
     this.router.navigate(['']);
   }
 
-  navigateToItemPage(id: string) {
-    this.router.navigate([`store/item/${id}`]);
-  }
-
   navigateToLoginPage() {
     this.router.navigate([`user/auth`]);
   }
@@ -29,5 +25,19 @@ export class AppRoutingService {
 
   navigateToAsidePage() {
     this.router.navigate([`user/aside`]);
+  }
+
+  navigateToCategoryPage(catId: string) {
+    this.router.navigate([`store/goods/${catId}`]);
+  }
+
+  navigateToSubCategoryPage(catId: string, subCatId: string) {
+    this.router.navigate([
+      `store/goods/${catId}/${subCatId}`,
+    ]);
+  }
+
+  navigateToItemPage(id: string) {
+    this.router.navigate([`store/item/${id}`]);
   }
 }
