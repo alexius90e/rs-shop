@@ -1,7 +1,35 @@
-<div class="container-xxl">
+<div class="favorites container-xxl">
   <div class="row">
-    <div class="col-12">
-      <h2 class="h2">Избранные товары</h2>
+    <h2 class="h2">Избранные товары</h2>
+    <div
+      class="favorites__item col-12 col-sm-6 col-md-4 col-lg-3 mb-3"
+      *ngFor="let item of favorItems"
+    >
+      <div class="card p-3">
+        <img [src]="item.imageUrls[0]" class="card-img-top" alt="..." />
+        <h2 class="h6 fw-bold">{{ item.name | uppercase }}</h2>
+        <app-good-rating [rating]="item.rating"></app-good-rating>
+        <h3 class="h3 fw-bold">{{ item.price | currency }}</h3>
+        <div class="d-grid gap-2 d-md-block">
+          <button
+            class="btn btn-danger me-2"
+            *ngIf="item.isInCart === false"
+            (click)="addItemToCart(item)"
+          >
+            В корзину
+          </button>
+          <button
+            class="btn btn-outline-danger me-2"
+            *ngIf="item.isInCart === true"
+            (click)="removeItemFromCart(item)"
+          >
+            Убрать из корзины
+          </button>
+          <button class="btn btn-light" (click)="deleteItem(item.id)">
+            Удалить
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

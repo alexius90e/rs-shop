@@ -3,7 +3,6 @@ import { AppDataService } from '../../../core/services/app-data.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ShopItem } from 'src/app/shared/models/shop-item';
-import { AppRoutingService } from 'src/app/core/services/app-routing.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { OrderItem } from 'src/app/shared/models/order-item';
 
@@ -14,13 +13,13 @@ import { OrderItem } from 'src/app/shared/models/order-item';
 })
 export class CategoryPageComponent implements OnInit, OnDestroy {
   private counter = 1;
-  private itemsQty = 12;
-  private shopItemsSubscription!: Subscription;
+  private itemsQty = 8;
   public shopItems: ShopItem[] = [];
-  private routeSubscription!: Subscription;
   public routeParams!: Params;
   private maxHeadingLength: number = 56;
   private isReversed = false;
+  private routeSubscription: Subscription = Subscription.EMPTY;
+  private shopItemsSubscription: Subscription = Subscription.EMPTY;
 
   constructor(
     private appData: AppDataService,
@@ -31,21 +30,10 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSubscription = this.route.params.subscribe((params) => {
-      this.routeParams = params;
       this.counter = 1;
-      if (this.routeParams.subCatId) {
-        this.shopItemsSubscription = this.appData
-          .getGoodsBySubcategory(
-            this.routeParams.catId,
-            this.routeParams.subCatId,
-            this.itemsQty * this.counter
-          )
-          .subscribe((shopItems) => (this.shopItems = shopItems));
-      } else {
-        this.shopItemsSubscription = this.appData
-          .getGoodsByCategory(this.routeParams.catId, this.itemsQty * this.counter)
-          .subscribe((shopItems) => (this.shopItems = shopItems));
-      }
+      this.routeParams = params;
+      this.shopItems = [];
+      this.addItems(this.routeParams);
     });
   }
 
@@ -53,6 +41,38 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
     this.shopItemsSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
+
+  addItems(params: Params) {
+    if (params.subCatId) {
+      this.getSubcategoryItems();
+    } else {
+      this.getCategoryItems();
+    }
+  }
+
+  addMoreItems(shopItems: ShopItem[]) {
+    this.shopItems = this.shopItems.concat(
+      shopItems.slice(this.itemsQty * (this.counter - 1))
+    );
+  }
+
+  getSubcategoryItems() {
+    this.shopItemsSubscription = this.appData
+      .getGoodsBySubcategory(
+        this.routeParams.catId,
+        this.routeParams.subCatId,
+        this.itemsQty * this.counter
+      )
+      .subscribe((shopItems) => this.addMoreItems(shopItems));
+  }
+
+  getCategoryItems() {
+    this.shopItemsSubscription = this.appData
+      .getGoodsByCategory(this.routeParams.catId, this.itemsQty * this.counter)
+      .subscribe((shopItems) => this.addMoreItems(shopItems));
+  }
+
+
 
   cropHeading(heading: string): string {
     if (heading.length > this.maxHeadingLength)
@@ -84,36 +104,21 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
 
   increaseCounter() {
     this.counter += 1;
-    console.log(this.counter);
-    if (this.routeParams.subCatId) {
-      this.shopItemsSubscription = this.appData
-        .getGoodsBySubcategory(
-          this.routeParams.catId,
-          this.routeParams.subCatId,
-          this.itemsQty * this.counter
-        )
-        .subscribe((shopItems) => (this.shopItems = shopItems));
-    } else {
-      this.shopItemsSubscription = this.appData
-        .getGoodsByCategory(this.routeParams.catId, this.itemsQty * this.counter)
-        .subscribe((shopItems) => (this.shopItems = shopItems));
-    }
+    this.addItems(this.routeParams);
   }
 
   addItemToCart(id: string): void {
-    const orderItem: OrderItem = {id, amount: 1}
+    const orderItem: OrderItem = { id, amount: 1 };
     this.userService.addCartItem(orderItem).subscribe();
   }
 
   addItemToFavorites(id: string): void {
-    const orderItem: OrderItem = {id, amount: 1}
+    const orderItem: OrderItem = { id, amount: 1 };
     this.userService.addFavoritesItem(orderItem).subscribe();
   }
 
   goGoodsPage(id: string) {
-    this.router.navigate([
-      `store/item/${id}`,
-    ]);
+    this.router.navigate([`store/item/${id}`]);
   }
 
   goMainPage() {

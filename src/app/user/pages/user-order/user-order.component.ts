@@ -12,16 +12,16 @@ import { UserInfo } from 'src/app/shared/models/user-info';
   styleUrls: ['./user-order.component.scss'],
 })
 export class UserOrderComponent implements OnInit, OnDestroy {
-  constructor(
-    private userService: UserService,
-    private appdata: AppDataService
-  ) {}
-
   public cartItems: ShopItem[] = [];
 
   private userSubscription: Subscription = Subscription.EMPTY;
 
   private itemSubscription: Subscription = Subscription.EMPTY;
+
+  constructor(
+    private userService: UserService,
+    private appdata: AppDataService
+  ) {}
 
   ngOnInit() {
     this.getCart();
@@ -35,15 +35,19 @@ export class UserOrderComponent implements OnInit, OnDestroy {
   getCart() {
     this.userSubscription = this.userService
       .getUserInfo()
-      .pipe(map((userInfo: UserInfo): string[] => userInfo.cart))
-      .subscribe((cart: string[]) => {
-        const a: ShopItem[] = []
-        for (let cartItemId of cart) {
-          this.userSubscription = this.appdata
-            .getShopItemById(cartItemId)
-            .subscribe((cardItem) => a.push(cardItem));
-        }
-        this.cartItems = a;
+      .pipe(
+        map((userInfo: UserInfo): ShopItem[] => {
+          const cartItems: ShopItem[] = [];
+          for (let cartItemId of userInfo.cart) {
+            this.userSubscription = this.appdata
+              .getShopItemById(cartItemId)
+              .subscribe((cardItem) => cartItems.push(cardItem));
+          }
+          return cartItems;
+        })
+      )
+      .subscribe((cartItems: ShopItem[]): void => {
+        this.cartItems = cartItems;
       });
   }
 

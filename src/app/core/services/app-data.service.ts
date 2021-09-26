@@ -8,16 +8,26 @@ import { ShopItem } from 'src/app/shared/models/shop-item';
   providedIn: 'root',
 })
 export class AppDataService {
-  baseUrl: string = 'http://localhost:3004';
+  private readonly baseUrl: string = 'http://localhost:3004';
+
+  public shopItems: ShopItem[] = [];
 
   constructor(private http: HttpClient) {}
+
+  addShopItems(shopItems: ShopItem[]) {
+    this.shopItems = shopItems;
+  }
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
   }
 
-  getGoodsByCategory(id: string, count = 12): Observable<ShopItem[]> {
-    const requestUrl = `/goods/category/${id}?start=${0}&count=${count}`;
+  getGoodsByCategory(
+    id: string,
+    count = 12,
+    start = 0
+  ): Observable<ShopItem[]> {
+    const requestUrl = `/goods/category/${id}?start=${start}&count=${count}`;
     return this.http.get<ShopItem[]>(`${this.baseUrl}${requestUrl}`);
   }
 

@@ -7,6 +7,7 @@ import { UserOrderComponent } from './pages/user-order/user-order.component';
 import { UserAsideComponent } from './pages/user-aside/user-aside.component';
 import { UserRegistrationComponent } from './pages/user-registration/user-registration.component';
 import { UserOrderFormComponent } from './components/user-order-form/user-order-form.component';
+import { GoodRatingComponent } from './components/good-rating/good-rating.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, UserRoutingModule],
@@ -16,6 +17,7 @@ import { UserOrderFormComponent } from './components/user-order-form/user-order-
     UserAsideComponent,
     UserRegistrationComponent,
     UserOrderFormComponent,
+    GoodRatingComponent
   ],
 })
 export class UserModule {}
