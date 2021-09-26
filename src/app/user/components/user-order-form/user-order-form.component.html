@@ -1,6 +1,11 @@
+<div class="alert alert-success" *ngIf="orderIsComplete">
+  Заказ успешно оформлен!
+</div>
+
 <form
   class="col-12 col-md-8 col-lg-6"
   [formGroup]="orderForm"
+  *ngIf="!orderIsComplete"
   (ngSubmit)="submit()"
   novalidate
 >

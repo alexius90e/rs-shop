@@ -13,9 +13,9 @@
               />
             </td>
             <td>{{ cartItem.name }}</td>
-            <td><input type="number" value="1" /></td>
+            <td><input type="number" [(ngModel)]="cartItem.amount" /></td>
             <td>{{ cartItem.description.slice(0, 128) }}</td>
-            <td class="fw-bold">{{ cartItem.price | currency: "BYN " }}</td>
+            <td class="fw-bold" *ngIf="cartItem.amount">{{ cartItem.price * cartItem.amount | currency: "BYN " }}</td>
             <td>
               <button
                 class="order__delete-btn btn btn-light"
@@ -25,7 +25,7 @@
           </tr>
         </tbody>
       </table>
-      <app-user-order-form></app-user-order-form>
+      <app-user-order-form [items]="cartItems"></app-user-order-form>
     </div>
   </div>
 </div>

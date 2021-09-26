@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AppRoutingService } from 'src/app/core/services/app-routing.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { OrderItem } from 'src/app/shared/models/order-item';
+import { ShopItem } from 'src/app/shared/models/shop-item';
+import { UserOrderRequest } from 'src/app/shared/models/user-order-request';
 
 @Component({
   selector: 'app-user-order-form',
@@ -7,7 +12,16 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./user-order-form.component.scss'],
 })
 export class UserOrderFormComponent {
-  fields: string[] = ['name', 'address', 'phone', 'timeToDeliver'];
+  @Input() items: ShopItem[] = [];
+
+  public fields: string[] = ['name', 'address', 'phone', 'timeToDeliver'];
+
+  public orderIsComplete: boolean = false;
+
+  constructor(
+    private userService: UserService,
+    private appRouting: AppRoutingService
+  ) {}
 
   orderForm: FormGroup = new FormGroup({
     name: new FormControl('', [
@@ -27,6 +41,16 @@ export class UserOrderFormComponent {
   });
 
   submit() {
-    console.log(this.orderForm.value);
+    const items: OrderItem[] = this.items.map((item) => {
+      return {
+        id: item.id,
+        amount: item.amount ? item.amount : 1,
+      };
+    });
+    const details = this.orderForm.value;
+    const orderRequest: UserOrderRequest = { items, details };
+    this.userService.addOrder(orderRequest).subscribe();
+    this.orderIsComplete = true;
+    setInterval(() => this.appRouting.navigateToMainPage(), 2000);
   }
 }

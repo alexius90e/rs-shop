@@ -72,8 +72,6 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
       .subscribe((shopItems) => this.addMoreItems(shopItems));
   }
 
-
-
   cropHeading(heading: string): string {
     if (heading.length > this.maxHeadingLength)
       return `${heading.substring(0, this.maxHeadingLength)}...`;
@@ -107,14 +105,26 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
     this.addItems(this.routeParams);
   }
 
-  addItemToCart(id: string): void {
-    const orderItem: OrderItem = { id, amount: 1 };
+  addToCart(item: ShopItem): void {
+    const orderItem: OrderItem = { id: item.id, amount: 1 };
     this.userService.addCartItem(orderItem).subscribe();
+    item.isInCart = !item.isInCart;
   }
 
-  addItemToFavorites(id: string): void {
-    const orderItem: OrderItem = { id, amount: 1 };
+  deleteFromCart(item: ShopItem): void {
+    this.userService.deleteCartItem(item.id).subscribe();
+    item.isInCart = !item.isInCart;
+  }
+
+  addToFavorites(item: ShopItem): void {
+    const orderItem: OrderItem = { id: item.id, amount: 1 };
     this.userService.addFavoritesItem(orderItem).subscribe();
+    item.isFavorite = !item.isFavorite;
+  }
+
+  deleteFromFavorites(item: ShopItem): void {
+    this.userService.deleteFavoritesItem(item.id).subscribe();
+    item.isFavorite = !item.isFavorite;
   }
 
   goGoodsPage(id: string) {

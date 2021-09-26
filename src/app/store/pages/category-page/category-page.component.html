@@ -74,13 +74,29 @@
         </h6>
 
         <div class="btn-group">
-          <button class="btn btn-primary" (click)="addItemToCart(shopItem.id)">
+          <button
+            class="btn btn-danger"
+            *ngIf="shopItem.isInCart === false"
+            (click)="addToCart(shopItem)"
+          >
             Купить
           </button>
           <button
+            class="btn btn-outline-danger"
+            *ngIf="shopItem.isInCart === true"
+            (click)="deleteFromCart(shopItem)"
+          >
+            Убрать из корзины
+          </button>
+          <button
             class="btn btn-light"
-            [ngClass]="{isFavorite: shopItem.isFavorite}"
-            (click)="addItemToFavorites(shopItem.id)"
+            *ngIf="shopItem.isFavorite === false"
+            (click)="addToFavorites(shopItem)"
+          ></button>
+          <button
+            class="btn btn-light isFavorite"
+            *ngIf="shopItem.isFavorite === true"
+            (click)="deleteFromFavorites(shopItem)"
           ></button>
         </div>
       </div>

@@ -9,6 +9,7 @@ import { OrderItem } from 'src/app/shared/models/order-item';
 import { UserOrder } from 'src/app/shared/models/user-order';
 import { UserOrderModify } from 'src/app/shared/models/user-order-modify';
 import { TokenResponse } from 'src/app/shared/models/token-response';
+import { UserOrderRequest } from 'src/app/shared/models/user-order-request';
 
 @Injectable({
   providedIn: 'root',
@@ -27,10 +28,11 @@ export class UserService {
       console.error('An error occurred:', error.error);
     } else {
       console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      );
     }
-    return throwError(
-      'Something bad happened; please try again later.');
+    return throwError('Something bad happened; please try again later.');
   }
 
   public getAuthorizationToken() {
@@ -88,23 +90,21 @@ export class UserService {
       .pipe(catchError((error) => this.handleError(error)));
   }
 
-  public addOrder(order: UserOrder): Observable<void | UserOrder> {
+  public addOrder(order: UserOrderRequest): Observable<UserOrder> {
     return this.http
       .post<UserOrder>(`${this.baseUrl}/users/order`, order)
-      .pipe(catchError(async (error) => console.log(error)));
+      .pipe(catchError((error) => this.handleError(error)));
   }
 
-  public updateOrder(
-    order: UserOrderModify
-  ): Observable<void | UserOrderModify> {
+  public updateOrder(order: UserOrderModify): Observable<UserOrderModify> {
     return this.http
       .put<UserOrderModify>(`${this.baseUrl}/users/order`, order)
-      .pipe(catchError(async (error) => console.log(error)));
+      .pipe(catchError((error) => this.handleError(error)));
   }
 
   public deleteOrder(id: string): Observable<unknown> {
     return this.http
       .delete(`${this.baseUrl}/users/cart?id=${id}`)
-      .pipe(catchError(async (error) => console.log(error)));
+      .pipe(catchError((error) => this.handleError(error)));
   }
 }

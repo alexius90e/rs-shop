@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppDataService } from 'src/app/core/services/app-data.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { OrderItem } from 'src/app/shared/models/order-item';
 import { ShopItem } from 'src/app/shared/models/shop-item';
 
 @Component({
@@ -18,6 +20,7 @@ export class GoodPageComponent implements OnInit {
 
   constructor(
     private appData: AppDataService,
+    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -49,6 +52,28 @@ export class GoodPageComponent implements OnInit {
     const imageIndex = this.shopItem.imageUrls.indexOf(this.activeImageUrl);
     const nextImageIndex = imageIndex + 1 < quantity ? imageIndex + 1 : 0;
     this.activeImageUrl = this.shopItem.imageUrls.slice(nextImageIndex)[0];
+  }
+
+  addToCart(): void {
+    const orderItem: OrderItem = { id: this.shopItem.id, amount: 1 };
+    this.userService.addCartItem(orderItem).subscribe();
+    this.shopItem.isInCart = !this.shopItem.isInCart;
+  }
+
+  deleteFromCart(): void {
+    this.userService.deleteCartItem(this.shopItem.id).subscribe();
+    this.shopItem.isInCart = !this.shopItem.isInCart;
+  }
+
+  addToFavorites(): void {
+    const orderItem: OrderItem = { id: this.shopItem.id, amount: 1 };
+    this.userService.addFavoritesItem(orderItem).subscribe();
+    this.shopItem.isFavorite = !this.shopItem.isFavorite;
+  }
+
+  deleteFromFavorites(): void {
+    this.userService.deleteFavoritesItem(this.shopItem.id).subscribe();
+    this.shopItem.isFavorite = !this.shopItem.isFavorite;
   }
 
   goMainPage() {

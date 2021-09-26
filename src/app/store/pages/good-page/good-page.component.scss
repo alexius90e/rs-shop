@@ -1,15 +1,24 @@
 $thubnail-size: 6rem;
 
-.btn-danger {
+.btn {
   font-weight: 700;
   text-transform: uppercase;
+  border: 2px solid #ee4334;
+}
+
+.btn-danger {
   background-color: #ee4334;
-  border-color: #ff4c3b;
 
   &:hover {
-    background-color: #ee4334;
-    border-color: #ee4334;
     color: #ffffff;
+  }
+}
+
+.btn-outline-danger {
+  background-color: #ffffff;
+
+  &:hover {
+    color: #ee4334;
   }
 }
 

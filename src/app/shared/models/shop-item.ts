@@ -8,4 +8,5 @@ export interface ShopItem {
   description: string;
   isInCart: boolean;
   isFavorite: boolean;
+  amount?: number;
 }

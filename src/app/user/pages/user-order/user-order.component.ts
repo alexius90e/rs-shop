@@ -41,7 +41,10 @@ export class UserOrderComponent implements OnInit, OnDestroy {
           for (let cartItemId of userInfo.cart) {
             this.userSubscription = this.appdata
               .getShopItemById(cartItemId)
-              .subscribe((cardItem) => cartItems.push(cardItem));
+              .subscribe((cardItem) => {
+                cardItem.amount = 1;
+                return cartItems.push(cardItem)
+              });
           }
           return cartItems;
         })
