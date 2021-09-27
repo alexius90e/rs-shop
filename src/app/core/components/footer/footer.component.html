@@ -1,0 +1,22 @@
+<footer class="footer">
+  <div class="container-xxl">
+    <div class="row">
+      <div class="col-12 footer__contacts">
+        <a
+          *ngFor="let contact of contacts"
+          [href]="contact.href"
+          [ngClass]="contact.type"
+          >{{ contact.value }}</a
+        >
+      </div>
+      <hr>
+      <div class="col-12 footer__social">
+        <a
+          *ngFor="let link of social"
+          [href]="link.href"
+          [ngClass]="'footer__social_' + link.type"
+        ></a>
+      </div>
+    </div>
+  </div>
+</footer>

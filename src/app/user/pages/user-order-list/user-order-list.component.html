@@ -1,0 +1,51 @@
+<div class="container-xxl">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="h2">Лист ожидания</h2>
+
+      <div class="accordion">
+        <div class="accordion-item" *ngFor="let order of orders; let i = index" >
+          <h2 class="accordion-header" (click)="showOrder(i)">
+            <button class="accordion-button" [ngClass]="{collapsed: i !== currentOrder}">
+              Номер заказа: {{order.id}}
+            </button>
+          </h2>
+          <div class="accordion-collapse collapse" [ngClass]="{show: i === currentOrder}">
+            <div class="accordion-body">
+              <table class="table" *ngIf="i === currentOrder">
+                <tbody>
+                  <tr *ngFor="let item of currentOrderItems">
+                    <td>
+                      <img
+                        class="order__img img-thumbnail"
+                        [src]="item.imageUrls[0]"
+                      />
+                    </td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description.slice(0, 128) }}</td>
+                    <td class="fw-bold">{{ item.price  | currency: "BYN " }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <form>
+                <div class="mb-3">
+                  <input type="text" class="form-control" [(ngModel)]="order.details.name" name="name">
+                </div>
+                <div class="mb-3">
+                  <input type="text" class="form-control" [(ngModel)]="order.details.address" name="address">
+                </div>
+                <div class="mb-3">
+                  <input type="text" class="form-control" [(ngModel)]="order.details.phone" name="phone">
+                </div>
+                <div class="mb-3">
+                  <input type="datetime-local" class="form-control" [(ngModel)]="order.details.timeToDeliver" name="timeToDeliver">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

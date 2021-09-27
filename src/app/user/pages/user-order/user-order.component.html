@@ -1,0 +1,31 @@
+<div class="container-xxl order">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="h2">Оформление заказа</h2>
+      <p *ngIf="cartItems.length === 0">Корзина пуста</p>
+      <table class="table">
+        <tbody>
+          <tr class="align-items-center" *ngFor="let cartItem of cartItems">
+            <td>
+              <img
+                class="order__img img-thumbnail"
+                [src]="cartItem.imageUrls[0]"
+              />
+            </td>
+            <td>{{ cartItem.name }}</td>
+            <td><input type="number" [(ngModel)]="cartItem.amount" /></td>
+            <td>{{ cartItem.description.slice(0, 128) }}</td>
+            <td class="fw-bold" *ngIf="cartItem.amount">{{ cartItem.price * cartItem.amount | currency: "BYN " }}</td>
+            <td>
+              <button
+                class="order__delete-btn btn btn-light"
+                (click)="deleteItem(cartItem.id)"
+              ></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <app-user-order-form [items]="cartItems"></app-user-order-form>
+    </div>
+  </div>
+</div>

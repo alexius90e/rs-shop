@@ -1,0 +1,92 @@
+<div class="header-nav">
+  <div class="container-xxl">
+    <div class="row">
+      <div class="col-md-3 col-5 order-0 d-flex align-items-center">
+        <button (click)="goCatalog()" class="header-nav__categories"></button>
+        <div (click)="goHome()" class="header-nav__logo">
+          <span>Multi</span>Cart
+        </div>
+      </div>
+
+      <form
+        [formGroup]="searchForm"
+        class="header-nav__search col-md-6 col-12 order-md-1 order-2"
+        autocomplete="off"
+      >
+        <input
+          formControlName="searchQuery"
+          placeholder="Search"
+          name="search"
+        />
+
+        <table
+          class="table table-hover header-nav__search_dropdown col"
+          *ngIf="headerState.searchBar"
+        >
+          <tbody>
+            <tr
+              *ngFor="let searchItem of searchItems"
+              (click)="goItemPage(searchItem.id)"
+            >
+              <td>
+                <img
+                  class="header-nav__search_dropdown-img"
+                  [src]="searchItem.imageUrls[0]"
+                />
+              </td>
+              <td class="header-nav__search_dropdown-link">
+                {{ searchItem.name }}
+              </td>
+              <td class="fw-bold">{{ searchItem.price | currency: "BYN " }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+
+      <div class="header-nav__btns col-md-3 col-7 order-md-2 order-1">
+        <button class="header-nav__btns_account" (click)="toggleUserInfo()">
+          Аккаунт
+        </button>
+        <button class="header-nav__btns_basket" (click)="goUserPage('order')">
+          Корзина
+        </button>
+
+        <div
+          class="header-nav__user col-12 col-md-3"
+          *ngIf="headerState.userInfo"
+        >
+          <div class="header-nav__user_avatar"></div>
+          <h3 class="h3 mt-2 mb-4 text-center">{{userName}}</h3>
+          <div class="d-grid gap-2 col-11 mx-auto">
+            <button
+              class="btn btn-danger mb-4"
+              *ngIf="!userService.isAuthorized"
+              (click)="goUserPage('auth')"
+            >
+              Войти
+            </button>
+            <button
+              class="btn btn-danger mb-4"
+              *ngIf="userService.isAuthorized"
+              (click)="logout()"
+            >
+              Выйти
+            </button>
+            <button class="btn btn-light btn-sm" (click)="goUserPage('orders')">
+              Список заказов
+            </button>
+            <button class="btn btn-light btn-sm" (click)="goUserPage('aside')">
+              Избранное
+            </button>
+            <button
+              class="btn btn-link btn-sm"
+              (click)="goUserPage('register')"
+            >
+              Регистрация
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

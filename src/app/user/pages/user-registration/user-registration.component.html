@@ -1,0 +1,39 @@
+<div class="container-xxl">
+  <div class="row">
+    <h2 class="h2 col-12 col-md-8 mx-auto mb-4">Регистрация</h2>
+    <form
+      class="col-12 col-md-8 mx-auto"
+      [formGroup]="registForm"
+      (ngSubmit)="submit()"
+      novalidate
+    >
+      <div class="form-floating mb-2" *ngFor="let field of fields">
+        <input
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              registForm.controls[field].invalid &&
+              registForm.controls[field].touched,
+            'is-valid': registForm.controls[field].valid
+          }"
+          [formControlName]="field"
+          [placeholder]="field"
+          [name]="field"
+          [type]="field === 'timeToDeliver' ? 'datetime-local' : 'text'"
+        />
+        <label [for]="field">{{ field }}</label>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please enter a {{ field }}</div>
+      </div>
+
+      <div class="form-group">
+        <button
+          class="btn btn-danger mt-3 me-3"
+          [disabled]="registForm.invalid"
+        >
+          Регистрация
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
